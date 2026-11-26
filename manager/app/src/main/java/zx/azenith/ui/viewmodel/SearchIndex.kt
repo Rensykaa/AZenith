@@ -645,7 +645,7 @@ object SearchIndex {
             id = "prefs.telemetry",
             titleRes = R.string.prefs_telemetry_title,
             summaryRes = R.string.prefs_telemetry_desc,
-            icon = Icons.AutoMirrored.Rounded.Notes,
+            icon = Icons.AutoMirrored.Rounded.TextSnippet,
             group = SearchGroup.Prefs,
             target = SearchTarget.Route("preferenced")
         ),
