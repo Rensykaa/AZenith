@@ -23,6 +23,7 @@ BASE_INT=5; FAST_INT=5; GAME_INT=6; OFF_INT=60; LOG_MAX=65536
 PROCD=/proc
 case "$0" in */*) _bd=${0%/*} ;; *) _bd=. ;; esac
 GL_BASE="$_bd/gamelist.txt"; GAME_SWEEP_AVAIL=55
+AZ_PROF=/data/adb/.config/AZenith/API/current_profile
 TRIM_GAP=300
 TOPCS=${TOPCS:-/dev/cpuset/top-app/cgroup.procs}
 _ps=$(getconf PAGESIZE 2>/dev/null); case "$_ps" in ''|*[!0-9]*) _ps=4096 ;; esac; PAGE_KB=$((_ps / 1024))
@@ -611,6 +612,7 @@ log "daemon start pid=$$ $(sh "$0" info 2>/dev/null | head -n2 | tr '\n' ' ')"
 last_kill=0; cd_s=$COOLDOWN; int=$BASE_INT
 now=$(date +%s)
 GAMING=""; g_cand=""; g_miss=0; ul_tick=0; l2_hit=0; prot_epoch=0; PREV_FG=" "; trim_epoch=0; FG_PKGS=" "
+PROFILE_GAME=""; _pd_last=""
 gl_epoch=$now; pr_epoch=$now; l1_epoch=0; calm=0
 FSTRIM_LAST=$(cat "$FSTRIM_F" 2>/dev/null); case "$FSTRIM_LAST" in ''|*[!0-9]*) FSTRIM_LAST=$now ;; esac
 [ "$FSTRIM_LAST" -gt "$now" ] && FSTRIM_LAST=$now
@@ -624,6 +626,12 @@ while :; do
     [ $((now - gl_epoch)) -ge 60 ] && { gl_epoch=$now; load_games; swap_refresh; load_zr_cfg; heat_load_cfg; regret_load; }
     [ $((now - pr_epoch)) -ge 600 ] && { pr_epoch=$now; apply_am; prio_each prio_on; restrict_each restrict_on; regret_trim; }
     [ $((now - trim_epoch)) -ge "$TRIM_GAP" ] && { TRIMMED=" "; trim_epoch=$now; }
+
+    # AZenith decision first: profile 1 = game, leaving 1 = game over; 0 = no-op. Missing file or $D/no_profile_detect = old gamelist detection
+    _pd=""
+    if [ -f "$AZ_PROF" ] && [ ! -f "$D/no_profile_detect" ]; then read -r _pd _ 2>/dev/null < "$AZ_PROF"; fi
+    case "$_pd" in 1) ;; 2|3) _pd=0 ;; *) _pd="" ;; esac
+    [ "$_pd" = "$_pd_last" ] || { g_miss=0; _pd_last=$_pd; }
 
     if [ "$FG_TOP" != "$PREV_FG" ]; then
         for _f in $FG_TOP; do
@@ -642,7 +650,30 @@ while :; do
         fi
     fi
 
-    if [ "$on" = 1 ] && [ -n "$GAME_PKG" ] && [ ! -f "$D/no_gamemode" ]; then
+    if [ "$_pd" = 1 ] && [ ! -f "$D/no_gamemode" ]; then
+        # AZenith says game; a manual Performance pick lands here too, not only real games
+        _pd_top=0
+        for _n in $FG_TOP; do
+            case "$GAMES" in *"
+$_n
+"*) _pd_top=1; PROFILE_GAME=$_n; break ;; esac
+        done
+        if [ -n "$GAMING" ]; then
+            [ $((now - prot_epoch)) -ge 15 ] && { prot_epoch=$now; oom_protect "$GAMING"; }
+        elif [ "$_pd_top" = 1 ] && [ "$PROFILE_GAME" != "$GAME_PKG" ] && [ "$PROFILE_GAME" != "$_pd_last" ]; then
+            enter_game "$PROFILE_GAME"; av=$AVAIL
+        fi
+    elif [ "$_pd" = 0 ]; then
+        # game ended, but stay in game mode while the game is still on screen / in background
+        if [ -n "$GAMING" ]; then
+            if game_alive "$GAMING"; then
+                [ $((now - prot_epoch)) -ge 15 ] && { prot_epoch=$now; oom_protect "$GAMING"; }
+            else
+                g_miss=$((g_miss + 1))
+                [ "$g_miss" -ge 3 ] && { exit_game; g_miss=0; }
+            fi
+        fi
+    elif [ "$on" = 1 ] && [ -n "$GAME_PKG" ] && [ ! -f "$D/no_gamemode" ]; then
         g_miss=0
         if [ "$GAMING" != "$GAME_PKG" ]; then
             if [ "$g_cand" = "$GAME_PKG" ]; then enter_game "$GAME_PKG"; av=$AVAIL; else g_cand=$GAME_PKG; fi
