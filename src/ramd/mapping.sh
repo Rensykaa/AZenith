@@ -15,7 +15,7 @@
 # limitations under the License.
 
 #main define
-command -v sp >/dev/null 2>&1 || . "${MODPATH:-$MODDIR}/system/functions/common.sh"
+command -v sp >/dev/null 2>&1 || . "${0%/*}/common.sh"
 vixun="/data/local/tmp/vixun"
 mappingversion="1.0"
 
