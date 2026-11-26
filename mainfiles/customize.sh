@@ -422,6 +422,13 @@ if [ -z "$(getprop persist.sys.azenithconf.debloat)" ]; then
 	setprop persist.sys.azenithconf.debloat 0 || resetprop -p persist.sys.azenithconf.debloat 0
 fi
 
+# Opt-in Transsion tweaks: default OFF, never auto-on
+for _k in hdroff hapticoff screensaveroff blescanoff gearhead; do
+	if [ -z "$(getprop persist.sys.azenithconf.$_k)" ]; then
+		setprop "persist.sys.azenithconf.$_k" 0 || resetprop -p "persist.sys.azenithconf.$_k" 0
+	fi
+done
+
 # Set config properties to use
 echo "- Setting config properties..."
 props="

@@ -23,7 +23,7 @@
 # NOT touched here on purpose: debug.sf timing/phase-offset keys, governor, GPU, thermal.
 # Keys AZenith already attributes itself (prefs.rs / system.prop) are skipped when read from the sources.
 # Opt-out: $D/no_tweaks_boot (everything) | $D/no_sysperf | $D/no_telemetry | $D/no_taskprofile
-# usage: tweaks_boot.sh [sysperf|telemetry|taskprofile]   (no argument = every enabled toggle)
+# usage: tweaks_boot.sh [sysperf|telemetry|taskprofile|optin]   (no argument = every enabled toggle)
 case "$0" in */*) _bd=${0%/*} ;; *) _bd=. ;; esac
 . "$_bd/common.sh"
 
@@ -47,6 +47,23 @@ NEVER_SF_KEYS_RE='^debug\.sf\.(hint_margin_us|cached_set_max_defer_render_attmpt
 applied="$D/sysperf.applied"
 # enabled <key>: true when the toggle is 1, or unset/empty (backward compatible default)
 enabled() { case "$(getprop persist.sys.azenithconf.$1)" in ''|1) return 0 ;; esac; return 1; }
+
+# ---------------------------- optin ----------------------------
+# Wave-2 opt-in toggles: persist.sys.azenithconf.<key> 1/0 -> $D/opt_<flag>,
+# the flag files the original mapping.sh optin_apply consumes. Unset prop:
+# flag left alone (manual opt-ins from old installs keep working).
+OPTIN_FLAGS="hdroff:opt_hdr_off hapticoff:opt_haptic_off screensaveroff:opt_screensaver_off blescanoff:opt_ble_scan_off gearhead:opt_debloat_gearhead"
+optin() {
+    is_transsion || { log "optin: not a Transsion device, skipped"; return 0; }
+    for _pair in $OPTIN_FLAGS; do
+        _k=${_pair%%:*}; _f=${_pair#*:}
+        case "$(getprop "persist.sys.azenithconf.$_k")" in
+            1) touch "$D/$_f" ;;
+            0) rm -f "$D/$_f" ;;
+        esac
+    done
+    log "optin: flags synced"
+}
 
 # ---------------------------- sysperf ----------------------------
 # Transsion-only: xos_tweak.sh is written against XOS settings/device_config keys.
@@ -161,11 +178,12 @@ case "$1" in
     sysperf) enabled sysperf && sysperf ;;
     telemetry) enabled telemetry && telemetry ;;
     taskprofile) enabled taskprofile && taskprofile ;;
-    '')
+    '') 
+        optin
         enabled sysperf && sysperf
         enabled telemetry && telemetry
         enabled taskprofile && taskprofile
         ;;
-    *) echo "usage: tweaks_boot.sh [sysperf|telemetry|taskprofile|restore]" ;;
+    *) echo "usage: tweaks_boot.sh [sysperf|telemetry|taskprofile|optin|restore]" ;;
 esac
 exit 0
