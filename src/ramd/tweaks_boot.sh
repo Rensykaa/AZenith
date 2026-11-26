@@ -80,8 +80,8 @@ optin() {
         if [ ! -f "$D/no_facemoji_disable" ] && [ "$(getprop persist.sys.azenithconf.debloat)" != 1 ]; then
             touch "$D/no_facemoji_disable"; _fmtouch=1
         fi
-        . "$D/common.sh"      # sets $D and $vixun; mapping.sh reads $vixun and needs sp/bk_put
-        . "$D/mapping.sh"     # defines optin_apply; its own sourcing line is a no-op once sp exists
+        . "$_bd/common.sh"      # sets $D and $vixun; mapping.sh reads $vixun and needs sp/bk_put
+        . "$_bd/mapping.sh"     # defines optin_apply; its own sourcing line is a no-op once sp exists
         optin_apply
         [ -n "$_fmtouch" ] && rm -f "$D/no_facemoji_disable"
         log "optin: applied"

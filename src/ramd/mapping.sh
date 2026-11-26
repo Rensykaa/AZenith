@@ -262,11 +262,6 @@ restore_optin() {
     if [ -f "$vixun/.hdr_off_on" ]; then
         cmd display set-user-disabled-hdr-types 2>/dev/null; rm -f "$vixun/.hdr_off_on"
     fi
-    rm -f "$vixun/orig/system.haptic_feedback_enabled" \
-          "$vixun/orig/secure.screensaver_enabled" \
-          "$vixun/orig/secure.screensaver_activate_on_dock" \
-          "$vixun/orig/global.ble_scan_always_enabled" \
-          "$vixun/orig/global.ble_scan_always_enabled_on"
     bk_restore
     for _key in haptic screensaver screensaverondock; do
         [ -f "$vixun/$_key" ] || continue
