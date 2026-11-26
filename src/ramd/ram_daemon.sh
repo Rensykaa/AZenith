@@ -2,7 +2,7 @@
 # AZenith - Adaptive RAM daemon (shell uid, no root needed)
 # Modified by: Rensykaa (fork) - pushed notification tag/title under the AZenith name
 # usage: ram_daemon.sh [once|once game|stop|info|sessions [N]|fstrim|prio add|rm|list [pkg]|restrict add|rm|list [pkg]]  (no arg = run daemon)
-# Game RAM Guard (formerly "game mode"; RAM/priority only, no CPU/GPU): gamelist.txt + $D/gamelist -> one soft sweep, no routine kill while playing; off: $D/no_gamemode
+# Game RAM Guard (formerly "game mode"; RAM/priority only, no CPU/GPU): gamelist.txt + $D/gamelist + AZenith azenithApplist.json -> one soft sweep, no routine kill while playing; off: $D/no_gamemode
 # Sessions/learning/heat (game_stats.sh): $D/game_sessions.log, $D/game_learn (per-game sweep aggressiveness), battery-temp aware | off: $D/no_learn, $D/no_heat_aware, $D/no_heat_notify | thresholds: $D/heat.cfg
 # Kill-regret (regret.sh): an app reopened <90 s after the daemon killed it ranks lower; 3 regrets/24 h = skipped by the normal kill pass | off: $D/no_regret
 # ZRAM-aware (zram_aware.sh): swap usage steers trim/kill levels and the game sweep target; off: $D/no_zram_aware | thresholds: $D/zram_thr.cfg (ZR_SAT/ZR_LOW/ZR_COMPACT)
@@ -25,6 +25,7 @@ PROCD=/proc
 case "$0" in */*) _bd=${0%/*} ;; *) _bd=. ;; esac
 GL_BASE="$_bd/gamelist.txt"; GAME_SWEEP_AVAIL=55
 AZ_PROF=/data/adb/.config/AZenith/API/current_profile
+AZ_GL=/data/adb/.config/AZenith/gamelist/azenithApplist.json; AZ_STAMP=$D/az_gamelist.cache
 TRIM_GAP=300
 TOPCS=${TOPCS:-/dev/cpuset/top-app/cgroup.procs}
 _ps=$(getconf PAGESIZE 2>/dev/null); case "$_ps" in ''|*[!0-9]*) _ps=4096 ;; esac; PAGE_KB=$((_ps / 1024))
@@ -123,6 +124,23 @@ $(grep -hv '^#' "$PRIOF" 2>/dev/null | tr -d '\r')
 "
     WLS="
 $(grep -hv '^#' "$WL" 2>/dev/null | tr -d '\r')
+"
+}
+# cheap change check: true when the AZenith list is new and newer than the stamp (missing file = no)
+az_gl_changed() { [ -f "$AZ_GL" ] && { [ ! -f "$AZ_STAMP" ] || [ "$AZ_GL" -nt "$AZ_STAMP" ]; }; }
+# AZenith game list (azenithApplist.json): top-level keys only (4-space indent, "pkg": {), own newline list like
+# $GAMES. Parsed only when the file is newer than the stamp; missing/empty/minified = empty list. Cheap when unchanged.
+load_az_games() {
+    if ! [ -f "$AZ_GL" ]; then rm -f "$AZ_STAMP"           # list gone (uninstalled): drop the cache, $GAMES alone
+    elif az_gl_changed; then
+        if sed -n 's/^ \{4\}"\([^"]*\)": *{.*/\1/p' "$AZ_GL" 2>/dev/null | grep -v '^com\.example\.' | tr -d '\r' > "$AZ_STAMP.tmp"; then
+            mv "$AZ_STAMP.tmp" "$AZ_STAMP"
+        else
+            : > "$AZ_STAMP"; rm -f "$AZ_STAMP.tmp"          # unreadable file: empty list, retried on next change
+        fi
+    fi
+    AZ_GAMES="
+$(cat "$AZ_STAMP" 2>/dev/null)
 "
 }
 
@@ -613,7 +631,8 @@ log "daemon start pid=$$ $(sh "$0" info 2>/dev/null | head -n2 | tr '\n' ' ')"
 last_kill=0; cd_s=$COOLDOWN; int=$BASE_INT
 now=$(date +%s)
 GAMING=""; g_cand=""; g_miss=0; ul_tick=0; l2_hit=0; prot_epoch=0; PREV_FG=" "; trim_epoch=0; FG_PKGS=" "
-PROFILE_GAME=""; _pd_last=""
+PROFILE_GAME=""; _pd_last=""; AZ_GAMES=""
+load_az_games   # once at start: parse only if the list changed; keeps AZ_GAMES defined
 gl_epoch=$now; pr_epoch=$now; l1_epoch=0; calm=0
 FSTRIM_LAST=$(cat "$FSTRIM_F" 2>/dev/null); case "$FSTRIM_LAST" in ''|*[!0-9]*) FSTRIM_LAST=$now ;; esac
 [ "$FSTRIM_LAST" -gt "$now" ] && FSTRIM_LAST=$now
@@ -624,7 +643,7 @@ while :; do
     heat_tick
     fg_top_fast || fg_scan
     if [ "$FG_TOP" != " " ]; then on=1; else on=0; fi
-    [ $((now - gl_epoch)) -ge 60 ] && { gl_epoch=$now; load_games; swap_refresh; load_zr_cfg; heat_load_cfg; regret_load; }
+    [ $((now - gl_epoch)) -ge 60 ] && { gl_epoch=$now; load_games; load_az_games; swap_refresh; load_zr_cfg; heat_load_cfg; regret_load; }
     [ $((now - pr_epoch)) -ge 600 ] && { pr_epoch=$now; apply_am; prio_each prio_on; restrict_each restrict_on; regret_trim; }
     [ $((now - trim_epoch)) -ge "$TRIM_GAP" ] && { TRIMMED=" "; trim_epoch=$now; }
 
@@ -653,15 +672,16 @@ while :; do
 
     if [ "$_pd" = 1 ] && [ ! -f "$D/no_gamemode" ]; then
         # AZenith says game; a manual Performance pick lands here too, not only real games
+        # entry = AZenith's own list (AZ_GAMES) or gamelist.txt / $D/gamelist ($GAMES)
         _pd_top=0
         for _n in $FG_TOP; do
-            case "$GAMES" in *"
+            case "$GAMES$AZ_GAMES" in *"
 $_n
 "*) _pd_top=1; PROFILE_GAME=$_n; break ;; esac
         done
         if [ -n "$GAMING" ]; then
             [ $((now - prot_epoch)) -ge 15 ] && { prot_epoch=$now; oom_protect "$GAMING"; }
-        elif [ "$_pd_top" = 1 ] && [ "$PROFILE_GAME" != "$GAME_PKG" ] && [ "$PROFILE_GAME" != "$_pd_last" ]; then
+        elif [ "$_pd_top" = 1 ] && [ "$PROFILE_GAME" != "$GAME_PKG" ]; then
             enter_game "$PROFILE_GAME"; av=$AVAIL
         fi
     elif [ "$_pd" = 0 ]; then
