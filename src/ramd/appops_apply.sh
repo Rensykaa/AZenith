@@ -1,5 +1,6 @@
 #!/system/bin/sh
-# AppOps applier (OPT-IN) for Transsion Optimizer.
+# AppOps applier (OPT-IN) for AZenith.
+# Modified by: Rensykaa (fork) - renamed to AZenith
 # Engine credit: Astrax (script de AppOps: mode_of parser, readback, retry variants, per-call timeout).
 # Adapted: no permission revoke, state in /data/local/tmp/vixun, protected packages skipped,
 #          original mode of every op is saved once to $D/orig_appops (restored by uninstall.sh).

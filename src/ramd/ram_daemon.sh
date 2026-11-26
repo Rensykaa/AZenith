@@ -1,5 +1,6 @@
 #!/system/bin/sh
-# Transsion Optimizer - Adaptive RAM daemon (shell uid, no root needed)
+# AZenith - Adaptive RAM daemon (shell uid, no root needed)
+# Modified by: Rensykaa (fork) - pushed notification tag/title under the AZenith name
 # usage: ram_daemon.sh [once|once game|stop|info|sessions [N]|fstrim|prio add|rm|list [pkg]|restrict add|rm|list [pkg]]  (no arg = run daemon)
 # Game RAM Guard (formerly "game mode"; RAM/priority only, no CPU/GPU): gamelist.txt + $D/gamelist -> one soft sweep, no routine kill while playing; off: $D/no_gamemode
 # Sessions/learning/heat (game_stats.sh): $D/game_sessions.log, $D/game_learn (per-game sweep aggressiveness), battery-temp aware | off: $D/no_learn, $D/no_heat_aware, $D/no_heat_notify | thresholds: $D/heat.cfg
@@ -720,7 +721,7 @@ $_n
         session_tick
         if [ "$HEAT" = 2 ] && [ $((now - heat_note)) -ge 900 ]; then
             heat_note=$now; log "HEAT hot while gaming: $((BT / 10)).$((BT % 10))C"
-            [ -f "$D/no_heat_notify" ] || { notify transsion_optimizer "$(heat_msg "$((BT / 10))")" "Transsion Optimizer" >/dev/null 2>&1 & }
+            [ -f "$D/no_heat_notify" ] || { notify azenith "$(heat_msg "$((BT / 10))")" "AZenith" >/dev/null 2>&1 & }
         fi
     fi
 

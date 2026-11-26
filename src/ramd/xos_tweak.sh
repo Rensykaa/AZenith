@@ -2,6 +2,7 @@
 # ======================
 # System Performance Tweaks
 # ======================
+# Modified by: Rensykaa (fork) - user-visible text renamed to AZenith
 # Removed (placebo / unverified, not in default): bluetooth_a2dp_codec, os_quick_start_*, os_supreme_user_experience, user_experience,
 # power_check_*, io.scheduler_slice_idle, transsion-opcode_background. ble_scan_always_enabled is now opt-in (mapping.sh optin_apply).
 # Settings changes go through bk_put (common.sh): the original value is saved once and restored by uninstall.sh.
@@ -95,12 +96,12 @@ tweak_setprop debug.egl.blobcache.multifile_limit "$((128 * 1024 * 1024))"
 
 if [ -n "$MAX_HZ" ]; then
     EFF_HZ="$(get_effective_hz "$MAX_HZ")"
-    echo "Transsion Optimizer: max supported ${MAX_HZ} Hz, effective ${EFF_HZ} Hz"
+    echo "AZenith: max supported ${MAX_HZ} Hz, effective ${EFF_HZ} Hz"
     # debug.sf.hint_margin_us / cached_set_max_defer_render_attmpts: SurfaceFlinger reads them once at start, so a setprop here is too late.
     # post-fs-data.sh applies them from this cached value (effective from the next boot). A/B: touch $D/no_sf_timing.
     echo "$EFF_HZ" > "$D/eff_hz" 2>/dev/null
 else
-    echo "Transsion Optimizer: could not detect supported display modes; skipping refresh-rate-dependent tweaks."
+    echo "AZenith: could not detect supported display modes; skipping refresh-rate-dependent tweaks."
     rm -f "$D/eff_hz" 2>/dev/null
 fi
 
@@ -129,4 +130,4 @@ fi
 
 # Notification
 # service.sh sets XOS_QUIET_NOTIFY=1 so boot shows a single notification.
-[ "$XOS_QUIET_NOTIFY" = "1" ] || notify "" 'Tweaks have been successfully applied.' "Transsion Optimizer"
+[ "$XOS_QUIET_NOTIFY" = "1" ] || notify "" 'Tweaks have been successfully applied.' "AZenith"
