@@ -389,13 +389,6 @@ object SearchIndex {
             target = SearchTarget.Pager("settings")
         ),
         SearchEntry(
-            id = "settings.cleanup",
-            titleRes = R.string.settings_cleanup,
-            icon = Icons.Rounded.CleaningServices,
-            group = SearchGroup.Settings,
-            target = SearchTarget.Pager("settings")
-        ),
-        SearchEntry(
             id = "settings.uninstall",
             titleRes = R.string.uninstall,
             icon = Icons.Rounded.Delete,
