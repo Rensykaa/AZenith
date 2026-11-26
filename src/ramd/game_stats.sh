@@ -42,10 +42,11 @@ heat_tick() {
     fi
     if [ "$_t" != "$HEAT" ]; then log "heat $HEAT->$_t temp=$((BT / 10)).$((BT % 10))C"; HEAT=$_t; fi
 }
+# No apostrophes: notify() wraps the text in single quotes.
 heat_msg() {
     case "$(getprop persist.sys.locale)" in
-        id*|in*) echo "Suhu baterai $1°C saat main game. Pertimbangkan istirahat sebentar atau pindah ke tempat teduh." ;;
-        *) echo "Battery is at $1°C while gaming. Consider a short break or some shade." ;;
+        id*|in*) echo "Uwaah, baterai udah $1°C nih saat main game. Istirahat sebentar yuk, biar HP-mu adem lagi ~" ;;
+        *) echo "Whoa, battery is at $1°C while gaming. Take a tiny break so your phone can cool down ~" ;;
     esac
 }
 
