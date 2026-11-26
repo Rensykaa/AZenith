@@ -63,6 +63,29 @@ optin() {
         esac
     done
     log "optin: flags synced"
+
+    # Main thread must never wait: the original module applied the flags from service.sh
+    # after sys.boot_completed=1 + sleep 20.1. Same here, in a background subshell.
+    (
+        _w=0
+        until [ "$(getprop sys.boot_completed)" = "1" ]; do
+            [ "$_w" -ge 180 ] && { log "optin: boot_completed after 180s, give up"; exit 0; }
+            sleep 2
+            _w=$((_w + 2))
+        done
+        sleep 20
+        # optin_apply ends with facemoji_apply, which is NOT opt-in: a no_facemoji_disable marker
+        # makes that call a no-op unless debloat is exactly 1. The marker is removed again.
+        _fmtouch=""
+        if [ ! -f "$D/no_facemoji_disable" ] && [ "$(getprop persist.sys.azenithconf.debloat)" != 1 ]; then
+            touch "$D/no_facemoji_disable"; _fmtouch=1
+        fi
+        . "$D/common.sh"      # sets $D and $vixun; mapping.sh reads $vixun and needs sp/bk_put
+        . "$D/mapping.sh"     # defines optin_apply; its own sourcing line is a no-op once sp exists
+        optin_apply
+        [ -n "$_fmtouch" ] && rm -f "$D/no_facemoji_disable"
+        log "optin: applied"
+    ) >/dev/null 2>&1 &
 }
 
 # ---------------------------- sysperf ----------------------------

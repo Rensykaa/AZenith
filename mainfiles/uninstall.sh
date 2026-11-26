@@ -49,6 +49,11 @@ elif [ -f "/data/local/tmp/vixun/ramd.pid" ]; then
 fi
 # Debloat marker/log: a reinstall must not inherit the "already done" state
 rm -f "/data/local/tmp/vixun/debloat.done" "/data/local/tmp/vixun/debloat.log"
+# Opt-in toggles (Tweaks) and what facemoji_apply disabled: put the Settings originals back,
+# re-enable the packages, drop the HDR override. Must run before $vixun is removed.
+if [ -f "/data/adb/modules/AZenith/ramd/mapping.sh" ]; then
+    sh "/data/adb/modules/AZenith/ramd/mapping.sh" restore_optin >/dev/null 2>&1
+fi
 rm -rf "/data/local/tmp/vixun"
 
 pm uninstall zx.azenith >/dev/null 2>&1 &

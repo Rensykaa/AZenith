@@ -194,6 +194,8 @@ done
 #   opt_screensaver_off  secure screensaver_enabled / screensaver_activate_on_dock 0
 #   opt_ble_scan_off     global ble_scan_always_enabled 0   (can break Find My Device)
 #   opt_debloat_gearhead disable com.google.android.projection.gearhead (Android Auto)
+# Undo everything this section did (used by uninstall.sh / cleanup.sh before $vixun is dropped):
+#   sh mapping.sh restore_optin
 bk_restore_one() {  # ns key
     f="$vixun/orig/$1.$2"; [ -f "$f" ] || return 0
     v=$(cat "$f")
@@ -253,3 +255,43 @@ optin_apply() {
     fi
     facemoji_apply
 }
+
+# Undo for uninstall: re-enable every package this section disabled, restore the backed-up
+# Settings values and the HDR types. Appended to, not called by optin_apply.
+restore_optin() {
+    if [ -f "$vixun/.hdr_off_on" ]; then
+        cmd display set-user-disabled-hdr-types 2>/dev/null; rm -f "$vixun/.hdr_off_on"
+    fi
+    rm -f "$vixun/orig/system.haptic_feedback_enabled" \
+          "$vixun/orig/secure.screensaver_enabled" \
+          "$vixun/orig/secure.screensaver_activate_on_dock" \
+          "$vixun/orig/global.ble_scan_always_enabled" \
+          "$vixun/orig/global.ble_scan_always_enabled_on"
+    bk_restore
+    for _key in haptic screensaver screensaverondock; do
+        [ -f "$vixun/$_key" ] || continue
+        case "$_key" in
+            haptic) settings put system haptic_feedback_enabled 1 ;;
+            screensaver) settings put secure screensaver_enabled 1 ;;
+            screensaverondock) settings put secure screensaver_activate_on_dock 1 ;;
+        esac
+        rm -f "$vixun/$_key"
+    done
+    [ -f "$vixun/debloatlist" ] || return 0
+    # debloatlist holds what ramd disabled; facemoji is only ours while it is in the list too
+    _fm=com.facemoji.lite.transsion
+    if [ -f "$vixun/no_facemoji_disable" ]; then
+        grep -vxF "$_fm" "$vixun/debloatlist" > "$vixun/debloatlist.tmp"; mv "$vixun/debloatlist.tmp" "$vixun/debloatlist"
+    fi
+    while read -r _pkg; do
+        [ -n "$_pkg" ] || continue
+        pm enable --user 0 "$_pkg" >/dev/null 2>&1
+    done < "$vixun/debloatlist"
+    rm -f "$vixun/debloatlist"
+}
+
+if [ "${0##*/}" = mapping.sh ]; then
+    case "$1" in
+        restore_optin) restore_optin ;;
+    esac
+fi
