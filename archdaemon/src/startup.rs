@@ -24,7 +24,7 @@ use std::time::Duration;
 
 const AZENITH_PROPERTIES: &str = "persist.sys.azenith";
 
-const VALID_AZENITH_PROPS: [&str; 53] = [
+const VALID_AZENITH_PROPS: [&str; 58] = [
     "persist.sys.azenith.custom_default_balanced_IO",
     "persist.sys.azenith.custom_default_cpu_gov",
     "persist.sys.azenith.custom_default_maligpu_gov",
@@ -49,6 +49,7 @@ const VALID_AZENITH_PROPS: [&str; 53] = [
     "persist.sys.azenithconf.APreload",
     "persist.sys.azenithconf.DThermal",
     "persist.sys.azenithconf.SFL",
+    "persist.sys.azenithconf.ble_scan_off",
     "persist.sys.azenithconf.bypasschg",
     "persist.sys.azenithconf.bypasschgthreshold",
     "persist.sys.azenithconf.renderer",
@@ -56,11 +57,14 @@ const VALID_AZENITH_PROPS: [&str; 53] = [
     "persist.sys.azenithconf.clearbg",
     "persist.sys.azenithconf.cpulimit",
     "persist.sys.azenithconf.debloat",
+    "persist.sys.azenithconf.debloat_gearhead",
     "persist.sys.azenithconf.disabletrace",
     "persist.sys.azenithconf.dnd",
     "persist.sys.azenithconf.fpsged",
     "persist.sys.azenithconf.freqoffset",
     "persist.sys.azenithconf.fstrim",
+    "persist.sys.azenithconf.haptic_off",
+    "persist.sys.azenithconf.hdr_off",
     "persist.sys.azenithconf.iosched",
     "persist.sys.azenithconf.justintime",
     "persist.sys.azenithconf.litemode",
@@ -70,6 +74,7 @@ const VALID_AZENITH_PROPS: [&str; 53] = [
     "persist.sys.azenithconf.ramd",
     "persist.sys.azenithconf.schedtunes",
     "persist.sys.azenithconf.schemeconfig",
+    "persist.sys.azenithconf.screensaveroff",
     "persist.sys.azenithconf.showtoast",
     "persist.sys.azenithconf.sysperf",
     "persist.sys.azenithconf.taskprofile",
