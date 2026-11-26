@@ -65,6 +65,8 @@ STATE=$(getprop persist.sys.azenith.state)
 # Transsion toggles: tweaks apply now, debloat schedules its own one-shot run
 [ -f "$MODDIR/ramd/tweaks_boot.sh" ] && sh "$MODDIR/ramd/tweaks_boot.sh" >/dev/null 2>&1 &
 [ -f "$MODDIR/ramd/debloat_boot.sh" ] && sh "$MODDIR/ramd/debloat_boot.sh" >/dev/null 2>&1 &
+# Boot notification: one message, tagged AZenith (opt-out: /data/local/tmp/vixun/no_boot_notify)
+[ -f "$MODDIR/ramd/notify_boot.sh" ] && sh "$MODDIR/ramd/notify_boot.sh" >/dev/null 2>&1 &
 
 # Exec Binder Companion Daemon
 "$BIN_MON"

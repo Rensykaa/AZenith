@@ -17,6 +17,7 @@
 
 # Boot layer for three preference toggles (persist.sys.azenithconf.<key>):
 #   sysperf     -> xos_tweak.sh (without its telemetry section) + non-duplicate keys of transsion.prop
+#                  xos_tweak.sh itself runs at the end with XOS_QUIET_NOTIFY=1 (notify_boot.sh owns the boot message)
 #   telemetry   -> telemetry.txt section
 #   taskprofile -> profile.sh
 # Every XOS part is Transsion-only; elsewhere the script exits before touching anything.
@@ -161,6 +162,11 @@ sysperf() {
     fi
 
     log "sysperf: $(wc -l < "$applied" 2>/dev/null | tr -d ' ') entries applied"
+
+    # Original XOS tweak script (refresh-rate dependent props + its notification).
+    # Quiet: the single boot notification comes from notify_boot.sh.
+    XOS_QUIET_NOTIFY=1 sh "$_bd/xos_tweak.sh" >/dev/null 2>&1
+    log "sysperf: xos_tweak.sh run"
 }
 
 # ---------------------------- telemetry ----------------------------
