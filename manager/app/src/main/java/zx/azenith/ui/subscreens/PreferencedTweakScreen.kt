@@ -93,7 +93,6 @@ import zx.azenith.ui.util.isTranssionDevice
  * carry no keys of their own.
  */
 private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
-private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
     "prefs.ble_scan_off" to 2,
     "prefs.debloat" to 2,
     "prefs.debloat_gearhead" to 2,
