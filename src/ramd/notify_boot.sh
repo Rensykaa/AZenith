@@ -40,7 +40,7 @@ echo "$_bid" > "$_mk" 2>/dev/null
 
 sleep 5
 case "$(getprop persist.sys.locale)" in
-    id*|in*) notify azenith "Yahoo!! AZenith sudah aktif" "AZenith" ;;
-    *) notify azenith "Yahoo!! AZenith is now active" "AZenith" ;;
+    id*|in*) notify azenith "Yahoo!! AZenith sudah aktif" "AZenith" 10000 ;;
+    *) notify azenith "Yahoo!! AZenith is now active" "AZenith" 10000 ;;
 esac
 exit 0

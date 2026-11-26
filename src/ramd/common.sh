@@ -24,14 +24,18 @@ IS_ROOT=0; [ "$(id -u)" = 0 ] && IS_ROOT=1
 
 # setprop that logs refusals (denied.log is reset at every boot by service.sh)
 sp() { setprop "$1" "$2" 2>/dev/null || echo "$1" >> "$D/denied.log"; }
-# notify <tag> <text> [title] : post a notification. As root, post as shell uid 2000 first (root-posted ones are often dropped)
+# notify <tag> <text> [title] [timeout_ms] : post a notification through the AZenith app (ZenithReceiver).
+# tag is unused (kept for compatibility). title defaults to AZenith, timeout_ms is milliseconds (omitted = no timeout).
+# Title and text are passed as plain double-quoted args: no nested shell, so keep messages free of ' and ".
 notify() {
-    _nt=""; [ -n "$3" ] && _nt="-t '$3'"
-    if [ "$(id -u)" = 0 ] && command -v su >/dev/null 2>&1; then
-        su 2000 -c "cmd notification post $_nt '$1' '$2'" >/dev/null 2>&1 && return 0
-        su -lp 2000 -c "cmd notification post $_nt '$1' '$2'" >/dev/null 2>&1 && return 0
+    if [ -n "$4" ]; then
+        am broadcast -a zx.azenith.ACTION_MANAGE -n zx.azenith/zx.azenith.receiver.ZenithReceiver \
+            --es notifytitle "${3:-AZenith}" --es notifytext "$2" --ez chrono_bool false --es timeout "$4" >/dev/null 2>&1
+    else
+        am broadcast -a zx.azenith.ACTION_MANAGE -n zx.azenith/zx.azenith.receiver.ZenithReceiver \
+            --es notifytitle "${3:-AZenith}" --es notifytext "$2" --ez chrono_bool false >/dev/null 2>&1
     fi
-    if [ -n "$3" ]; then cmd notification post -t "$3" "$1" "$2" >/dev/null 2>&1; else cmd notification post "$1" "$2" >/dev/null 2>&1; fi
+    return 0
 }
 # write to a sysfs/tracefs node only if it is writable
 wr() { [ -w "$2" ] && echo "$1" > "$2"; }
