@@ -92,6 +92,7 @@ import zx.azenith.ui.util.getChipsetVendor
  * carry no keys of their own.
  */
 private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
+    "prefs.debloat" to 2,
     "prefs.gpu_mali" to 2,
     "prefs.jit" to 2,
     "prefs.logd" to 2,
@@ -99,6 +100,9 @@ private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
     "prefs.sched_tunes" to 2,
     "prefs.section" to 1,
     "prefs.sfl" to 2,
+    "prefs.sysperf" to 2,
+    "prefs.taskprofile" to 2,
+    "prefs.telemetry" to 2,
     "prefs.thermals" to 2,
     "prefs.trace" to 2,
     "prefs.walt_tunes" to 2,)
@@ -137,6 +141,10 @@ fun PreferenceTweakScreen(navController: NavController) {
     var dlogcat by remember { mutableStateOf<Boolean?>(null) }
     var distherm by remember { mutableStateOf<Boolean?>(null) }
     var ramdstate by remember { mutableStateOf<Boolean?>(null) }
+    var sysperfstate by remember { mutableStateOf<Boolean?>(null) }
+    var telemetryst by remember { mutableStateOf<Boolean?>(null) }
+    var taskprofilest by remember { mutableStateOf<Boolean?>(null) }
+    var debloatstate by remember { mutableStateOf<Boolean?>(null) }
 
     // Load all properties asynchronously - skeleton shows immediately while loading
     LaunchedEffect(Unit) {
@@ -151,11 +159,16 @@ fun PreferenceTweakScreen(navController: NavController) {
         dlogcat = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.logd") == "1" }
         distherm = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.DThermal") == "1" }
         ramdstate = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.ramd") == "1" }
+        sysperfstate = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.sysperf") == "1" }
+        telemetryst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.telemetry") == "1" }
+        taskprofilest = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.taskprofile") == "1" }
+        debloatstate = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.debloat") == "1" }
 
         // Capture baselines after all values are loaded
         if (socType != null && schedTunes != null && sflstate != null && jitstate != null && 
             malischedstate != null && waltTunes != null && DTraces != null && dlogcat != null && distherm != null &&
-            ramdstate != null) {
+            ramdstate != null && sysperfstate != null && telemetryst != null && taskprofilest != null &&
+            debloatstate != null) {
             RebootManager.captureBaselineOnce("pref_schedtunes", schedTunes!!)
             RebootManager.captureBaselineOnce("pref_SFL", sflstate!!)
             RebootManager.captureBaselineOnce("pref_justintime", jitstate!!)
@@ -165,6 +178,10 @@ fun PreferenceTweakScreen(navController: NavController) {
             RebootManager.captureBaselineOnce("pref_logd", dlogcat!!)
             RebootManager.captureBaselineOnce("pref_DThermal", distherm!!)
             RebootManager.captureBaselineOnce("pref_ramd", ramdstate!!)
+            RebootManager.captureBaselineOnce("pref_sysperf", sysperfstate!!)
+            RebootManager.captureBaselineOnce("pref_telemetry", telemetryst!!)
+            RebootManager.captureBaselineOnce("pref_taskprofile", taskprofilest!!)
+            RebootManager.captureBaselineOnce("pref_debloat", debloatstate!!)
         }
     }
 
@@ -236,7 +253,8 @@ fun PreferenceTweakScreen(navController: NavController) {
                         item {
                             if (socType != null && schedTunes != null && sflstate != null && jitstate != null && 
                                 malischedstate != null && waltTunes != null && DTraces != null && dlogcat != null && distherm != null &&
-                                ramdstate != null) {
+                                ramdstate != null && sysperfstate != null && telemetryst != null && taskprofilest != null &&
+                                debloatstate != null) {
 
                                 val isMediaTek   = socType == "mediatek"
                                 val isSnapdragon = socType == "qualcomm"
@@ -364,6 +382,75 @@ fun PreferenceTweakScreen(navController: NavController) {
                                     }
                                 }
                             }
+
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.sysperf") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.Tune,
+                                                                                title = stringResource(R.string.prefs_sysperf_title),
+                                                                                summary = stringResource(R.string.prefs_sysperf_desc),
+                                                                                checked = sysperfstate!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_sysperf", isChecked) {
+                                                                                        sysperfstate = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.sysperf", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_sysperf", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.telemetry") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.AutoMirrored.Rounded.Notes,
+                                                                                title = stringResource(R.string.prefs_telemetry_title),
+                                                                                summary = stringResource(R.string.prefs_telemetry_desc),
+                                                                                checked = telemetryst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_telemetry", isChecked) {
+                                                                                        telemetryst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.telemetry", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_telemetry", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.debloat") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.CleaningServices,
+                                                                                title = stringResource(R.string.prefs_debloat_title),
+                                                                                summary = stringResource(R.string.prefs_debloat_desc),
+                                                                                checked = debloatstate!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_debloat", isChecked) {
+                                                                                        debloatstate = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.debloat", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_debloat", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.taskprofile") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.Speed,
+                                                                                title = stringResource(R.string.prefs_taskprofile_title),
+                                                                                summary = stringResource(R.string.prefs_taskprofile_desc),
+                                                                                checked = taskprofilest!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_taskprofile", isChecked) {
+                                                                                        taskprofilest = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.taskprofile", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_taskprofile", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
 
                             add {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.ramd") {

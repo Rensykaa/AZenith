@@ -317,6 +317,14 @@
     <string name="prefsdesc">Additional configurations applied automatically on boot</string>
     <string name="prefs_ramd_title">RAM Manager</string>
     <string name="prefs_ramd_desc">Run the RAM manager daemon to keep memory under control while gaming</string>
+    <string name="prefs_sysperf_title">System Performance Tweaks</string>
+    <string name="prefs_sysperf_desc">Apply the Transsion system performance and rendering tweaks at boot. Transsion devices only; ignored elsewhere</string>
+    <string name="prefs_telemetry_title">Disable Telemetry &amp; Logging</string>
+    <string name="prefs_telemetry_desc">Turn off vendor telemetry and logging channels at boot</string>
+    <string name="prefs_taskprofile_title">Task Profile</string>
+    <string name="prefs_taskprofile_desc">Push vendor background loggers and metrics threads into a restricted background cpuset. Requires root</string>
+    <string name="prefs_debloat_title">Debloat</string>
+    <string name="prefs_debloat_desc">Uninstall a fixed list of redundant vendor apps. Runs once, 120s after the next reboot, Transsion devices only</string>
     <string name="prev">Previous</string>
     <string name="profile_perflite">Lite Performance</string>
     <string name="profile_timeout">Performance Profile Timeout</string>

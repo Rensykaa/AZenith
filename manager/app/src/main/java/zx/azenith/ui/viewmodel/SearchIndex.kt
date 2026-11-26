@@ -634,6 +634,38 @@ object SearchIndex {
             requires = listOf(SearchRequirement.FullMode)
         ),
         SearchEntry(
+            id = "prefs.sysperf",
+            titleRes = R.string.prefs_sysperf_title,
+            summaryRes = R.string.prefs_sysperf_desc,
+            icon = Icons.Rounded.Tune,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.telemetry",
+            titleRes = R.string.prefs_telemetry_title,
+            summaryRes = R.string.prefs_telemetry_desc,
+            icon = Icons.AutoMirrored.Rounded.Notes,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.debloat",
+            titleRes = R.string.prefs_debloat_title,
+            summaryRes = R.string.prefs_debloat_desc,
+            icon = Icons.Rounded.CleaningServices,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.taskprofile",
+            titleRes = R.string.prefs_taskprofile_title,
+            summaryRes = R.string.prefs_taskprofile_desc,
+            icon = Icons.Rounded.Speed,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
             id = "prefs.ramd",
             titleRes = R.string.prefs_ramd_title,
             summaryRes = R.string.prefs_ramd_desc,
