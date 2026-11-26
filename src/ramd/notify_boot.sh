@@ -23,6 +23,12 @@ case "$0" in */*) _bd=${0%/*} ;; *) _bd=. ;; esac
 
 [ -f "$D/no_boot_notify" ] && exit 0
 
+_mk="$D/boot_notified"
+_bid=$(cut -d- -f1 /proc/sys/kernel/random/boot_id 2>/dev/null)
+if [ -f "$_mk" ]; then
+    [ -n "$_bid" ] && [ "$(cat "$_mk" 2>/dev/null)" = "$_bid" ] && exit 0
+fi
+
 # 180s cap: a device that never reports boot_completed must not keep this shell alive
 _w=0
 until [ "$(getprop sys.boot_completed)" = "1" ]; do
@@ -31,16 +37,22 @@ until [ "$(getprop sys.boot_completed)" = "1" ]; do
     _w=$((_w + 2))
 done
 
-_mk="$D/boot_notified"
-_bid=$(cut -d- -f1 /proc/sys/kernel/random/boot_id 2>/dev/null)
-if [ -f "$_mk" ]; then
-    [ -n "$_bid" ] && [ "$(cat "$_mk" 2>/dev/null)" = "$_bid" ] && exit 0
-fi
-echo "$_bid" > "$_mk" 2>/dev/null
+# boot_completed can be set while the device is still locked (direct boot): the
+# broadcast to the AZenith app is dropped then. Wait for the user unlock instead.
+# 900s cap: give up without writing the marker, so the next attempt can post.
+_w=0
+until [ -d /sdcard/Android ]; do
+    [ "$_w" -ge 900 ] && exit 0
+    sleep 2
+    _w=$((_w + 2))
+done
 
-sleep 5
+sleep 8
 case "$(getprop persist.sys.locale)" in
     id*|in*) notify azenith "Yahoo!! AZenith sudah tiba" "AZenith" ;;
     *) notify azenith "Yahoo!! AZenith is arrive" "AZenith" ;;
 esac
+
+# marker only after the send: a dropped broadcast must not block the retry
+echo "$_bid" > "$_mk" 2>/dev/null
 exit 0
