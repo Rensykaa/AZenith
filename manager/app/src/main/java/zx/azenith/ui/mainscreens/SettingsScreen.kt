@@ -103,7 +103,6 @@ private val SETTINGS_ROW_ITEMS: Map<String, Int> = mapOf(
     "settings.show_toast" to 2,
     "settings.tap_haptic" to 2,
     "settings.uninstall" to 4,
-    "settings.cleanup" to 4,
     "settings.verbose_log" to 4,
 )
 
@@ -155,12 +154,6 @@ fun SettingsScreen(
     val uninstallDialog = rememberConfirmDialog(
         onConfirm = {
             Shell.cmd("sh /data/adb/modules/AZenith/uninstall.sh").submit()
-        },
-        onDismiss = {}
-    )
-    val cleanupDialog = rememberConfirmDialog(
-        onConfirm = {
-            Shell.cmd("sh /data/adb/modules/AZenith/cleanup.sh").submit()
         },
         onDismiss = {}
     )
@@ -524,25 +517,6 @@ fun SettingsScreen(
                                     }
                                 },
                                 {
-                                    JumpRow(activeId = jumpPulse, entryId = "settings.cleanup") {
-                                        ExpressiveListItem(
-                                                                                onClick = {
-                                                                                    cleanupDialog.showConfirm(
-                                                                                        title = context.getString(R.string.settings_cleanup),
-                                                                                        content = context.getString(R.string.settings_cleanup_confirm_content),
-                                                                                        confirm = context.getString(R.string.yes),
-                                                                                        dismiss = context.getString(R.string.no)
-                                                                                    )
-                                                                                },
-                                                                                headlineContent = { Text(stringResource(R.string.settings_cleanup)) },
-                                                                                leadingContent = { LeadingIcon(icon = Icons.Filled.CleaningServices) },
-                                                                                trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null) },
-                                                                                focusKey = "settings.cleanup",
-                                                                                focusIndex = 4
-                                                                            )
-                                    }
-                                }
-                                {
                                     JumpRow(activeId = jumpPulse, entryId = "settings.uninstall") {
                                         ExpressiveListItem(
                                                                                 onClick = {
@@ -594,7 +568,6 @@ fun SettingsScreen(
 
         LoadingDialogHost(handle = loadingDialog)
         ConfirmDialogHost(handle = uninstallDialog)
-        ConfirmDialogHost(handle = cleanupDialog)
         ConfirmDialogHost(handle = rebootDialog)
 
         RootAppDialog {
