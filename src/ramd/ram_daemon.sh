@@ -681,7 +681,7 @@ $_n
         done
         if [ -n "$GAMING" ]; then
             [ $((now - prot_epoch)) -ge 15 ] && { prot_epoch=$now; oom_protect "$GAMING"; }
-        elif [ "$_pd_top" = 1 ] && [ "$PROFILE_GAME" != "$GAME_PKG" ]; then
+        elif [ "$_pd_top" = 1 ]; then
             enter_game "$PROFILE_GAME"; av=$AVAIL
         fi
     elif [ "$_pd" = 0 ]; then
