@@ -24,7 +24,7 @@ use std::time::Duration;
 
 const AZENITH_PROPERTIES: &str = "persist.sys.azenith";
 
-const VALID_AZENITH_PROPS: [&str; 49] = [
+const VALID_AZENITH_PROPS: [&str; 53] = [
     "persist.sys.azenith.custom_default_balanced_IO",
     "persist.sys.azenith.custom_default_cpu_gov",
     "persist.sys.azenith.custom_default_maligpu_gov",
@@ -55,6 +55,7 @@ const VALID_AZENITH_PROPS: [&str; 49] = [
     "persist.sys.azenithconf.bypasspath",
     "persist.sys.azenithconf.clearbg",
     "persist.sys.azenithconf.cpulimit",
+    "persist.sys.azenithconf.debloat",
     "persist.sys.azenithconf.disabletrace",
     "persist.sys.azenithconf.dnd",
     "persist.sys.azenithconf.fpsged",
@@ -70,6 +71,9 @@ const VALID_AZENITH_PROPS: [&str; 49] = [
     "persist.sys.azenithconf.schedtunes",
     "persist.sys.azenithconf.schemeconfig",
     "persist.sys.azenithconf.showtoast",
+    "persist.sys.azenithconf.sysperf",
+    "persist.sys.azenithconf.taskprofile",
+    "persist.sys.azenithconf.telemetry",
     "persist.sys.azenithconf.thermalcore",
     "persist.sys.azenithconf.usefpsgo",
     "persist.sys.azenithconf.walttunes",
