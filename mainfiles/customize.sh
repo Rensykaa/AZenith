@@ -412,6 +412,16 @@ if [ -z "$(getprop persist.sys.azenithconf.ramd)" ]; then
 	setprop persist.sys.azenithconf.ramd 1 || resetprop -p persist.sys.azenithconf.ramd 1
 fi
 
+# Transsion toggles default (ON); Debloat stays OFF, it never turns itself on
+for _k in sysperf telemetry taskprofile; do
+	if [ -z "$(getprop persist.sys.azenithconf.$_k)" ]; then
+		setprop "persist.sys.azenithconf.$_k" 1 || resetprop -p "persist.sys.azenithconf.$_k" 1
+	fi
+done
+if [ -z "$(getprop persist.sys.azenithconf.debloat)" ]; then
+	setprop persist.sys.azenithconf.debloat 0 || resetprop -p persist.sys.azenithconf.debloat 0
+fi
+
 # Set config properties to use
 echo "- Setting config properties..."
 props="

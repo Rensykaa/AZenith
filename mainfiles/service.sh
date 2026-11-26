@@ -62,6 +62,10 @@ STATE=$(getprop persist.sys.azenith.state)
 # Start RAM daemon (shell) before the exec'd daemons replace this shell
 [ -f "$MODDIR/ramd/ram_daemon.sh" ] && [ "$(getprop persist.sys.azenithconf.ramd)" = "1" ] && sh "$MODDIR/ramd/ram_daemon.sh" >/dev/null 2>&1 &
 
+# Transsion toggles: tweaks apply now, debloat schedules its own one-shot run
+[ -f "$MODDIR/ramd/tweaks_boot.sh" ] && sh "$MODDIR/ramd/tweaks_boot.sh" >/dev/null 2>&1 &
+[ -f "$MODDIR/ramd/debloat_boot.sh" ] && sh "$MODDIR/ramd/debloat_boot.sh" >/dev/null 2>&1 &
+
 # Exec Binder Companion Daemon
 "$BIN_MON"
 

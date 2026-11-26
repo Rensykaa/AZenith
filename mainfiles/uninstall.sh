@@ -47,6 +47,8 @@ if [ -f "$RAMD" ]; then
 elif [ -f "/data/local/tmp/vixun/ramd.pid" ]; then
     kill "$(cat /data/local/tmp/vixun/ramd.pid)" 2>/dev/null
 fi
+# Debloat marker/log: a reinstall must not inherit the "already done" state
+rm -f "/data/local/tmp/vixun/debloat.done" "/data/local/tmp/vixun/debloat.log"
 rm -rf "/data/local/tmp/vixun"
 
 pm uninstall zx.azenith >/dev/null 2>&1 &
