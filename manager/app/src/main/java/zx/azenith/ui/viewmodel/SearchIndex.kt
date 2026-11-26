@@ -389,6 +389,13 @@ object SearchIndex {
             target = SearchTarget.Pager("settings")
         ),
         SearchEntry(
+            id = "settings.cleanup",
+            titleRes = R.string.settings_cleanup,
+            icon = Icons.Rounded.CleaningServices,
+            group = SearchGroup.Settings,
+            target = SearchTarget.Pager("settings")
+        ),
+        SearchEntry(
             id = "settings.uninstall",
             titleRes = R.string.uninstall,
             icon = Icons.Rounded.Delete,
@@ -662,6 +669,46 @@ object SearchIndex {
             titleRes = R.string.prefs_taskprofile_title,
             summaryRes = R.string.prefs_taskprofile_desc,
             icon = Icons.Rounded.Speed,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.ble_scan_off",
+            titleRes = R.string.prefs_ble_scan_off_title,
+            summaryRes = R.string.prefs_ble_scan_off_desc,
+            icon = Icons.Rounded.BluetoothSearching,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.haptic_off",
+            titleRes = R.string.prefs_haptic_off_title,
+            summaryRes = R.string.prefs_haptic_off_desc,
+            icon = Icons.Rounded.Vibration,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.hdr_off",
+            titleRes = R.string.prefs_hdr_off_title,
+            summaryRes = R.string.prefs_hdr_off_desc,
+            icon = Icons.Rounded.HdrOff,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.screensaver_off",
+            titleRes = R.string.prefs_screensaver_off_title,
+            summaryRes = R.string.prefs_screensaver_off_desc,
+            icon = Icons.Rounded.Bedtime,
+            group = SearchGroup.Prefs,
+            target = SearchTarget.Route("preferenced")
+        ),
+        SearchEntry(
+            id = "prefs.debloat_gearhead",
+            titleRes = R.string.prefs_debloat_gearhead_title,
+            summaryRes = R.string.prefs_debloat_gearhead_desc,
+            icon = Icons.Rounded.DirectionsCar,
             group = SearchGroup.Prefs,
             target = SearchTarget.Route("preferenced")
         ),

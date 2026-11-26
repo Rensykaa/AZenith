@@ -325,6 +325,16 @@
     <string name="prefs_taskprofile_desc">Push vendor background loggers and metrics threads into a restricted background cpuset. Requires root</string>
     <string name="prefs_debloat_title">Debloat</string>
     <string name="prefs_debloat_desc">Uninstall a fixed list of redundant vendor apps. Runs once, 120s after the next reboot, Transsion devices only</string>
+    <string name="prefs_ble_scan_off_title">Disable BLE Background Scanning</string>
+    <string name="prefs_ble_scan_off_desc">Turn off always-on Bluetooth LE scanning at boot. May break Find My Device</string>
+    <string name="prefs_debloat_gearhead_title">Disable Android Auto</string>
+    <string name="prefs_debloat_gearhead_desc">Disable the Android Auto (Gearhead) app. Re-enabled when toggled off</string>
+    <string name="prefs_haptic_off_title">Disable Haptic Feedback</string>
+    <string name="prefs_haptic_off_desc">Turn system haptic feedback off at boot; original value restored when toggled off</string>
+    <string name="prefs_hdr_off_title">Disable HDR</string>
+    <string name="prefs_hdr_off_desc">Disable HDR display types (1-4) at boot; re-enabled when toggled off</string>
+    <string name="prefs_screensaver_off_title">Disable Screensaver</string>
+    <string name="prefs_screensaver_off_desc">Turn the daydream screensaver and its dock activation off at boot; original values restored when toggled off</string>
     <string name="prev">Previous</string>
     <string name="profile_perflite">Lite Performance</string>
     <string name="profile_timeout">Performance Profile Timeout</string>
@@ -604,6 +614,8 @@
     <string name="trim_filesystem_desc">Reclaim unused flash blocks on system partitions to improve I/O performance</string>
     <string name="uninstall">Uninstall</string>
     <string name="uninstall_confirm_content">Uninstalling the module will delete all AZenith-related files. It requires a reboot to take effect. Continue?</string>
+    <string name="settings_cleanup">Run Cleanup Now</string>
+    <string name="settings_cleanup_confirm_content">Run the residue cleanup script now. Use after disabling or removing the module. Continue?</string>
     <string name="unknown_app">Unknown App</string>
     <string name="unknown_package">Unknown Package</string>
     <string name="version_format">Version %1$s</string>

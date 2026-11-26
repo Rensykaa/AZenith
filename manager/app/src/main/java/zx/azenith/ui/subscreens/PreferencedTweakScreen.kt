@@ -92,12 +92,18 @@ import zx.azenith.ui.util.getChipsetVendor
  * carry no keys of their own.
  */
 private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
+private val PREFS_ROW_ITEMS: Map<String, Int> = mapOf(
+    "prefs.ble_scan_off" to 2,
     "prefs.debloat" to 2,
+    "prefs.debloat_gearhead" to 2,
     "prefs.gpu_mali" to 2,
+    "prefs.haptic_off" to 2,
+    "prefs.hdr_off" to 2,
     "prefs.jit" to 2,
     "prefs.logd" to 2,
     "prefs.ramd" to 2,
     "prefs.sched_tunes" to 2,
+    "prefs.screensaver_off" to 2,
     "prefs.section" to 1,
     "prefs.sfl" to 2,
     "prefs.sysperf" to 2,
@@ -145,6 +151,11 @@ fun PreferenceTweakScreen(navController: NavController) {
     var telemetryst by remember { mutableStateOf<Boolean?>(null) }
     var taskprofilest by remember { mutableStateOf<Boolean?>(null) }
     var debloatstate by remember { mutableStateOf<Boolean?>(null) }
+    var hdrst by remember { mutableStateOf<Boolean?>(null) }
+    var hapticst by remember { mutableStateOf<Boolean?>(null) }
+    var screensaverst by remember { mutableStateOf<Boolean?>(null) }
+    var blescanst by remember { mutableStateOf<Boolean?>(null) }
+    var gearheadst by remember { mutableStateOf<Boolean?>(null) }
 
     // Load all properties asynchronously - skeleton shows immediately while loading
     LaunchedEffect(Unit) {
@@ -163,12 +174,18 @@ fun PreferenceTweakScreen(navController: NavController) {
         telemetryst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.telemetry") == "1" }
         taskprofilest = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.taskprofile") == "1" }
         debloatstate = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.debloat") == "1" }
+        hdrst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.hdroff") == "1" }
+        hapticst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.hapticoff") == "1" }
+        screensaverst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.screensaveroff") == "1" }
+        blescanst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.blescanoff") == "1" }
+        gearheadst = withContext(Dispatchers.IO) { PropertyUtils.get("persist.sys.azenithconf.gearhead") == "1" }
 
         // Capture baselines after all values are loaded
         if (socType != null && schedTunes != null && sflstate != null && jitstate != null && 
             malischedstate != null && waltTunes != null && DTraces != null && dlogcat != null && distherm != null &&
             ramdstate != null && sysperfstate != null && telemetryst != null && taskprofilest != null &&
-            debloatstate != null) {
+            debloatstate != null && hdrst != null && hapticst != null && screensaverst != null &&
+            blescanst != null && gearheadst != null) {
             RebootManager.captureBaselineOnce("pref_schedtunes", schedTunes!!)
             RebootManager.captureBaselineOnce("pref_SFL", sflstate!!)
             RebootManager.captureBaselineOnce("pref_justintime", jitstate!!)
@@ -182,6 +199,11 @@ fun PreferenceTweakScreen(navController: NavController) {
             RebootManager.captureBaselineOnce("pref_telemetry", telemetryst!!)
             RebootManager.captureBaselineOnce("pref_taskprofile", taskprofilest!!)
             RebootManager.captureBaselineOnce("pref_debloat", debloatstate!!)
+            RebootManager.captureBaselineOnce("pref_hdr_off", hdrst!!)
+            RebootManager.captureBaselineOnce("pref_haptic_off", hapticst!!)
+            RebootManager.captureBaselineOnce("pref_screensaver_off", screensaverst!!)
+            RebootManager.captureBaselineOnce("pref_ble_scan_off", blescanst!!)
+            RebootManager.captureBaselineOnce("pref_debloat_gearhead", gearheadst!!)
         }
     }
 
@@ -254,7 +276,8 @@ fun PreferenceTweakScreen(navController: NavController) {
                             if (socType != null && schedTunes != null && sflstate != null && jitstate != null && 
                                 malischedstate != null && waltTunes != null && DTraces != null && dlogcat != null && distherm != null &&
                                 ramdstate != null && sysperfstate != null && telemetryst != null && taskprofilest != null &&
-                                debloatstate != null) {
+                                debloatstate != null && hdrst != null && hapticst != null && screensaverst != null &&
+                                blescanst != null && gearheadst != null) {
 
                                 val isMediaTek   = socType == "mediatek"
                                 val isSnapdragon = socType == "qualcomm"
@@ -446,6 +469,92 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                                         taskprofilest = isChecked
                                                                                         PropertyUtils.set("persist.sys.azenithconf.taskprofile", if (isChecked) "1" else "0")
                                                                                         RebootManager.checkAgainstBaseline("pref_taskprofile", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.hdr_off") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.HdrOff,
+                                                                                title = stringResource(R.string.prefs_hdr_off_title),
+                                                                                summary = stringResource(R.string.prefs_hdr_off_desc),
+                                                                                checked = hdrst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_hdr_off", isChecked) {
+                                                                                        hdrst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.hdroff", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_hdr_off", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.haptic_off") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.Vibration,
+                                                                                title = stringResource(R.string.prefs_haptic_off_title),
+                                                                                summary = stringResource(R.string.prefs_haptic_off_desc),
+                                                                                checked = hapticst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_haptic_off", isChecked) {
+                                                                                        hapticst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.hapticoff", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_haptic_off", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.screensaver_off") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.Bedtime,
+                                                                                title = stringResource(R.string.prefs_screensaver_off_title),
+                                                                                summary = stringResource(R.string.prefs_screensaver_off_desc),
+                                                                                checked = screensaverst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_screensaver_off", isChecked) {
+                                                                                        screensaverst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.screensaveroff", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_screensaver_off", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.ble_scan_off") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.BluetoothSearching,
+                                                                                title = stringResource(R.string.prefs_ble_scan_off_title),
+                                                                                summary = stringResource(R.string.prefs_ble_scan_off_desc),
+                                                                                checked = blescanst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_ble_scan_off", isChecked) {
+                                                                                        blescanst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.blescanoff", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_ble_scan_off", isChecked)
+                                                                                    }
+                                                                                }
+                                                                            )
+                                    }
+                                }
+                            add {
+                                JumpRow(activeId = jumpPulse, entryId = "prefs.debloat_gearhead") {
+                                    ExpressiveSwitchItem(
+                                                                                icon = Icons.Rounded.DirectionsCar,
+                                                                                title = stringResource(R.string.prefs_debloat_gearhead_title),
+                                                                                summary = stringResource(R.string.prefs_debloat_gearhead_desc),
+                                                                                checked = gearheadst!!,
+                                                                                onCheckedChange = { isChecked ->
+                                                                                    toggleWithRebootCheck("pref_debloat_gearhead", isChecked) {
+                                                                                        gearheadst = isChecked
+                                                                                        PropertyUtils.set("persist.sys.azenithconf.gearhead", if (isChecked) "1" else "0")
+                                                                                        RebootManager.checkAgainstBaseline("pref_debloat_gearhead", isChecked)
                                                                                     }
                                                                                 }
                                                                             )
