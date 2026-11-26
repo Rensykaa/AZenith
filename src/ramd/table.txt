@@ -1,0 +1,19 @@
+mt6983|Dimensity 9000
+mt6897|Dimensity 8300
+mt6895|Dimensity 8000/8100
+mt6893|Dimensity 1200
+mt6891|Dimensity 1100
+mt6833|Dimensity 700
+mt6789|Helio G99/G100
+mt6781|Helio G96
+mt6768|Helio G81
+mt6765|Helio G35/G37/P35
+mt6762|Helio P22
+
+
+ums9230_hulk|Unisoc T606
+BG6|Unisoc T606
+UMS512|T610/T618
+
+
+RMX3231|Spreadtrum SC9863A
