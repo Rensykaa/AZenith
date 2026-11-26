@@ -84,6 +84,7 @@ import zx.azenith.ui.util.DebugUtils
 import zx.azenith.ui.util.PropertyUtils
 import zx.azenith.ui.util.RebootManager
 import zx.azenith.ui.util.getChipsetVendor
+import zx.azenith.ui.util.isTranssionDevice
 
 
 /**
@@ -281,6 +282,7 @@ fun PreferenceTweakScreen(navController: NavController) {
 
                                 val isMediaTek   = socType == "mediatek"
                                 val isSnapdragon = socType == "qualcomm"
+                                val isTranssion  = isTranssionDevice()
 
                                 ExpressiveList(
                         content = buildList {
@@ -441,12 +443,14 @@ fun PreferenceTweakScreen(navController: NavController) {
                                     }
                                 }
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.debloat") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.CleaningServices,
                                                                                 title = stringResource(R.string.prefs_debloat_title),
-                                                                                summary = stringResource(R.string.prefs_debloat_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_debloat_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = debloatstate!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_debloat", isChecked) {
                                                                                         debloatstate = isChecked
@@ -456,6 +460,7 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                                 }
                                                                             )
                                     }
+                                }
                                 }
                             add {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.taskprofile") {
@@ -476,12 +481,14 @@ fun PreferenceTweakScreen(navController: NavController) {
                                 }
 
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.hdr_off") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.HdrOff,
                                                                                 title = stringResource(R.string.prefs_hdr_off_title),
-                                                                                summary = stringResource(R.string.prefs_hdr_off_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_hdr_off_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = hdrst!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_hdr_off", isChecked) {
                                                                                         hdrst = isChecked
@@ -492,13 +499,16 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                             )
                                     }
                                 }
+                                }
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.haptic_off") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.Vibration,
                                                                                 title = stringResource(R.string.prefs_haptic_off_title),
-                                                                                summary = stringResource(R.string.prefs_haptic_off_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_haptic_off_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = hapticst!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_haptic_off", isChecked) {
                                                                                         hapticst = isChecked
@@ -509,13 +519,16 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                             )
                                     }
                                 }
+                                }
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.screensaver_off") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.Bedtime,
                                                                                 title = stringResource(R.string.prefs_screensaver_off_title),
-                                                                                summary = stringResource(R.string.prefs_screensaver_off_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_screensaver_off_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = screensaverst!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_screensaver_off", isChecked) {
                                                                                         screensaverst = isChecked
@@ -526,13 +539,16 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                             )
                                     }
                                 }
+                                }
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.ble_scan_off") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.BluetoothSearching,
                                                                                 title = stringResource(R.string.prefs_ble_scan_off_title),
-                                                                                summary = stringResource(R.string.prefs_ble_scan_off_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_ble_scan_off_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = blescanst!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_ble_scan_off", isChecked) {
                                                                                         blescanst = isChecked
@@ -543,13 +559,16 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                             )
                                     }
                                 }
+                                }
                             add {
+                                Box(modifier = Modifier.alpha(if (isTranssion) 1f else 0.4f)) {
                                 JumpRow(activeId = jumpPulse, entryId = "prefs.debloat_gearhead") {
                                     ExpressiveSwitchItem(
                                                                                 icon = Icons.Rounded.DirectionsCar,
                                                                                 title = stringResource(R.string.prefs_debloat_gearhead_title),
-                                                                                summary = stringResource(R.string.prefs_debloat_gearhead_desc),
+                                                                                summary = if (isTranssion) stringResource(R.string.prefs_debloat_gearhead_desc) else stringResource(R.string.str_unavailable_transsion),
                                                                                 checked = gearheadst!!,
+                                                                                enabled = isTranssion,
                                                                                 onCheckedChange = { isChecked ->
                                                                                     toggleWithRebootCheck("pref_debloat_gearhead", isChecked) {
                                                                                         gearheadst = isChecked
@@ -559,6 +578,7 @@ fun PreferenceTweakScreen(navController: NavController) {
                                                                                 }
                                                                             )
                                     }
+                                }
                                 }
 
                             add {

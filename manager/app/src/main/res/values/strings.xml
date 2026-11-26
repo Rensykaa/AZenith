@@ -714,6 +714,7 @@
     <string name="banner_slogan_subtitle" translatable="false">Zenith your performance</string>
     <string name="str_unavailable_snapdragon">This option is only available for Snapdragon devices.</string>
     <string name="str_unavailable_mediatek">This option is only available for MediaTek devices.</string>
+    <string name="str_unavailable_transsion">This option is only available for Transsion devices.</string>
     <string name="send_logs_title">Send AZenith Logs</string>
     <string name="str_unknown_soc">Unknown (%1$s)</string>
     <string name="color_preset_vivid">Vivid</string>

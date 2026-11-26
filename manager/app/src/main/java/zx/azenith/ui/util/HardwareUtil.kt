@@ -220,3 +220,12 @@ private fun extractSocName(json: JSONObject, key: String): String? {
         else -> null
     }
 }
+
+// Transsion OEM family (Tecno/Infinix/itel). Cheap, no shell: safe during composition
+private val transsionDevice: Boolean by lazy {
+    val m = Build.MANUFACTURER.trim().lowercase()
+    val b = Build.BRAND.trim().lowercase()
+    m in setOf("tecno", "infinix", "itel") || b in setOf("tecno", "infinix", "itel") || m.contains("transsion") || b.contains("transsion")
+}
+
+fun isTranssionDevice(): Boolean = transsionDevice
