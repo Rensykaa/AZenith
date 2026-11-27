@@ -56,3 +56,4 @@ esac
 # marker only after the send: a dropped broadcast must not block the retry
 echo "$_bid" > "$_mk" 2>/dev/null
 exit 0
+# ArcZenith rebrand
