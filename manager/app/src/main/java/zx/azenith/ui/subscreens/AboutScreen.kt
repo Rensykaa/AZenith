@@ -329,6 +329,54 @@ fun AboutScreen(navController: NavController) {
             }
 
 
+            item {
+                AboutSectionTitle(stringResource(R.string.str_fork_maintainer))
+            }
+            item {
+                ExpressiveList(
+                    content = listOf(
+                        {
+                            ExpressiveListItem(
+                                headlineContent = { Text(text = stringResource(R.string.str_rensykaa), fontWeight = FontWeight.SemiBold) },
+                                supportingContent = { Text(stringResource(R.string.str_fork_maintainer)) },
+                                leadingContent = {
+                                    Image(
+                                        painter = painterResource(R.drawable.avatar_rensykaa),
+                                        contentDescription = stringResource(R.string.str_rensykaa),
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier.size(48.dp).clip(CircleShape)
+                                    )
+                                },
+                                trailingContent = {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        IconButton(onClick = { openLink("https://github.com/Rensykaa") }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_github),
+                                                contentDescription = stringResource(R.string.cd_github),
+                                                modifier = Modifier.size(29.dp),
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                        IconButton(onClick = { openLink("https://t.me/RenoStareal") }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_telegram),
+                                                contentDescription = stringResource(R.string.cd_telegram),
+                                                modifier = Modifier.size(26.dp),
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                    )
+                )
+            }
+
+
             item { 
                 JumpRow(activeId = jumpPulse, entryId = "about.collaborators", highlightShape = azShape(14.dp)) {
                     AboutSectionTitle(stringResource(R.string.str_collaborators)) 

@@ -511,6 +511,7 @@
     <string name="str_chipset">Chipset</string>
     <string name="str_close_logs">Close Logs</string>
     <string name="str_co_maintainer">Co-maintainer</string>
+    <string name="str_fork_maintainer">Fork Maintainer</string>
     <string name="str_collaborators">Collaborators</string>
     <string name="str_color_specification">Color</string>
     <string name="str_creator_maintainer">Creator &amp; Maintainer</string>
@@ -546,6 +547,7 @@
     <string name="str_no_active_nodes">No Active Working Nodes</string>
     <string name="str_no_active_nodes_desc">No available bypass nodes mapped in system properties</string>
     <string name="str_no_compatible_nodes">No Compatible Nodes</string>
+    <string name="str_rensykaa">Rensykaa</string>
     <string name="str_open_source">Open Source</string>
     <string name="str_package_name">Package Name</string>
     <string name="str_pause_battery_charging_when_pl">Pause battery charging while plugged in, power is directly supplied to the motherboard, significantly reducing device heat during gaming and extending battery life.</string>

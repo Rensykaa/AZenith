@@ -316,6 +316,7 @@
     <string name="str_chipset">Platform chip</string>
     <string name="str_close_logs">Tutup log</string>
     <string name="str_co_maintainer">Ko-maintainer</string>
+    <string name="str_fork_maintainer">Pengelola fork</string>
     <string name="str_collaborators">Kontributor kolaborasi</string>
     <string name="str_color_specification">Warna</string>
     <string name="str_creator_maintainer">Pembuat dan maintainer</string>
@@ -351,6 +352,7 @@
     <string name="str_no_active_nodes">Tidak ada node kerja yang tersedia</string>
     <string name="str_no_active_nodes_desc">Tidak ada node bypass yang tersedia dipetakan di properti sistem</string>
     <string name="str_no_compatible_nodes">Tidak ada node yang kompatibel</string>
+    <string name="str_rensykaa">Rensykaa</string>
     <string name="str_open_source">Sumber terbuka</string>
     <string name="str_package_name">Nama paket</string>
     <string name="str_pause_battery_charging_when_pl">Jeda pengisian baterai saat mengisi daya, daya langsung ke motherboard, secara signifikan mengurangi panas perangkat saat bermain game, memperpanjang umur baterai</string>
