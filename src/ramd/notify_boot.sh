@@ -49,8 +49,8 @@ done
 
 sleep 8
 case "$(getprop persist.sys.locale)" in
-    id*|in*) notify azenith "Yahoo!! ArcZenith sudah tiba" "AZenith" ;;
-    *) notify azenith "Yahoo!! ArcZenith is arrive" "AZenith" ;;
+    id*|in*) notify azenith "Yahoo!! ArcZenith sudah tiba" "ArcZenith" ;;
+    *) notify azenith "Yahoo!! ArcZenith is arrive" "ArcZenith" ;;
 esac
 
 # marker only after the send: a dropped broadcast must not block the retry
