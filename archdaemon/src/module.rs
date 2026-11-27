@@ -23,7 +23,7 @@ fn line_starts_with(lines: &[String], prefix: &str) -> bool {
 pub fn is_kanged() {
     let lines = read_module_prop_lines();
 
-    if !line_starts_with(&lines, "name=AZenith火") {
+    if !(line_starts_with(&lines, "name=AZenith火") || line_starts_with(&lines, "name=ArcZenith火")) {
         doorprize();
     }
     if !line_starts_with(&lines, "author=ArchHaven Developers") {
