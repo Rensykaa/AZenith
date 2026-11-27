@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Tentang AZenith</string>
+    <string name="about_azenith">Tentang ArcZenith</string>
     <string name="about_source_code">Lihat kode sumber di %1$s&lt;br/&gt;Bergabung dengan saluran %2$s kami</string>
     <string name="accent_color">Warna aksen</string>
     <string name="all_checks_finished">Semua pemeriksaan selesai</string>
-    <string name="all_set">Semua siap, Anda sekarang dapat menggunakan AZenith</string>
+    <string name="all_set">Semua siap, Anda sekarang dapat menggunakan ArcZenith</string>
     <string name="allow_verbose_log">Daemon keluarkan log verbose</string>
     <string name="android_version">Versi Android</string>
-    <string name="app_name">AZenith</string>
+    <string name="app_name">ArcZenith</string>
     <string name="app_name_settings">Nama aplikasi</string>
     <string name="app_priority">Prioritas aplikasi</string>
     <string name="app_priority_control">Kontrol prioritas aplikasi</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Pengaturan aplikasi</string>
     <string name="appearance">Tampilan</string>
     <string name="applist_title">Daftar aplikasi</string>
-    <string name="azenith_version">Versi AZenith</string>
+    <string name="azenith_version">Versi ArcZenith</string>
     <string name="balanced_io_scheduler">Penjadwal I/O seimbang</string>
     <string name="balanced_io_scheduler_desc">Penjadwal yang digunakan oleh profil seimbang</string>
     <string name="balanced_mali_gov">Governor GPU Mali seimbang</string>
@@ -275,7 +275,7 @@
     <string name="selinux_enforcing">Mode memaksa</string>
     <string name="selinux_permissive">Mode permisif</string>
     <string name="selinux_status">Status SELinux</string>
-    <string name="setting_up">Menyiapkan AZenith…</string>
+    <string name="setting_up">Menyiapkan ArcZenith…</string>
     <string name="settings">Pengaturan</string>
     <string name="sfl_latency">Latensi SurfaceFlinger</string>
     <string name="sfl_latency_desc">Optimalkan parameter SurfaceFlinger, kurangi latensi tampilan, tingkatkan respons sentuh</string>
@@ -297,18 +297,18 @@
     <string name="str_app_info">Info aplikasi</string>
     <string name="str_app_specific_settings_will_ove">Pengaturan khusus aplikasi akan menimpa pengaturan global, biarkan default untuk mewarisi konfigurasi global</string>
     <string name="str_apply_add_on_configurations_ta">Terapkan konfigurasi optimasi tambahan yang sesuai dengan perangkat; jika game mengalami penurunan performa, coba nonaktifkan item optimasi terkait</string>
-    <string name="str_archhaven_devs">Tim pengembang ArchHaven</string>
+    <string name="str_archhaven_devs">Tim pengembang ArchHaven (fork oleh Rensykaa)</string>
     <string name="str_author">Penulis</string>
     <string name="str_auto_mode">Mode otomatis</string>
     <string name="str_available_nodes">Node target tersedia (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">AZenith sudah siap!</string>
+    <string name="str_azenith_is_now_ready_to_go">ArcZenith sudah siap!</string>
     <string name="str_backup_configuration">Cadangan konfigurasi</string>
     <string name="str_backup_content_detected_select">Konten cadangan terdeteksi, pilih item yang akan dipulihkan:</string>
     <string name="str_backup_restore">Cadangan dan pemulihan</string>
     <string name="str_banner_updated">Gambar telah diperbarui</string>
     <string name="str_bannergradientalpha_100_toint">%1$d%%</string>
     <string name="str_build_date">Tanggal pembuatan</string>
-    <string name="str_by_using_per_app_refresh_rate">Setelah mengaktifkan refresh rate per aplikasi ini, refresh rate layar akan sepenuhnya dikelola oleh AZenith</string>
+    <string name="str_by_using_per_app_refresh_rate">Setelah mengaktifkan refresh rate per aplikasi ini, refresh rate layar akan sepenuhnya dikelola oleh ArcZenith</string>
     <string name="str_changelog">Log perubahan</string>
     <string name="str_channel">Saluran</string>
     <string name="str_check_environment">Periksa lingkungan runtime</string>
@@ -342,7 +342,7 @@
     <string name="str_launch_app">Buka aplikasi</string>
     <string name="str_launch_compatibility_check">Mulai pemeriksaan kompatibilitas</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Kami akan menyesuaikan beberapa pengaturan dasar</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Harap berikan AZenith akses Root</string>
+    <string name="str_let_s_grant_azenith_a_root_acc">Harap berikan ArcZenith akses Root</string>
     <string name="str_liliya">Liliya</string>
     <string name="str_load_a_previously_saved_backup">Muat file cadangan yang disimpan</string>
     <string name="str_logs_diagnostics">Log dan diagnostik</string>
@@ -364,7 +364,7 @@
     <string name="str_preview">Pratinjau</string>
     <string name="str_restore_configuration">Pulihkan konfigurasi</string>
     <string name="str_rianixia">Rianixia</string>
-    <string name="str_root_access_denied">Akses Root ditolak, AZenith memerlukan akses Root untuk berjalan</string>
+    <string name="str_root_access_denied">Akses Root ditolak, ArcZenith memerlukan akses Root untuk berjalan</string>
     <string name="str_root_access_granted">Akses Root diperoleh, semuanya siap!</string>
     <string name="str_run_diagnostics_above_or_check">Jalankan diagnostik di atas, atau periksa apakah kernel berisi node bypass pengisian daya</string>
     <string name="str_safely_test">Uji kompatibilitas perangkat dengan aman</string>
@@ -390,7 +390,7 @@
     <string name="str_welcome_to">Selamat datang di</string>
     <string name="str_you_re_all_set">Semua sudah siap</string>
     <string name="support_us">Dukung kami</string>
-    <string name="support_us_desc">Bantu pengembangan, biarkan AZenith terus dioptimalkan</string>
+    <string name="support_us_desc">Bantu pengembangan, biarkan ArcZenith terus dioptimalkan</string>
     <string name="tap_haptic_feedback">Umpan Balik Haptik</string>
     <string name="theme">Tema</string>
     <string name="theme_desc">Kustomisasi tema dan warna aksen</string>
@@ -417,7 +417,7 @@
     <string name="version_format">Versi %1$s</string>
     <string name="walt_tunes">Penyesuaian governor WALT</string>
     <string name="walt_tunes_desc">Optimalkan parameter governor WALT, tingkatkan respons penjadwalan CPU</string>
-    <string name="welcome_azenith">Selamat datang di AZenith</string>
+    <string name="welcome_azenith">Selamat datang di ArcZenith</string>
     <string name="yes">Ya</string>
     <string name="str_use_scroll_animation">Gunakan Animasi Gulir</string>
     <string name="str_use_scroll_animation_summary">Aktifkan animasi geser antar halaman</string>
@@ -535,7 +535,7 @@
     <string name="str_libraries_hint">Semua perpustakaan pihak ketiga yang digunakan oleh aplikasi ini</string>
     <string name="str_libraries_used">Perpustakaan Sumber Terbuka</string>
     <string name="str_licenses">Lisensi</string>
-    <string name="str_project_license_desc">AZenith adalah perangkat lunak gratis dan sumber terbuka, dirilis di bawah Lisensi Apache 2.0.</string>
+    <string name="str_project_license_desc">ArcZenith adalah perangkat lunak gratis dan sumber terbuka, dirilis di bawah Lisensi Apache 2.0.</string>
     <string name="str_update_channel">Perbarui saluran</string>
     <string name="str_view_full_license">Lihat lisensi penuh</string>
     <string name="str_view_on_github">Lihat di GitHub</string>
